@@ -1,12 +1,15 @@
+const express = require('express');
 const { DatabaseSync } = require('node:sqlite');
+const app = express();
+
+app.use(express.json());
+
 const db = new DatabaseSync('treinos.db');
+
 db.exec(`
-CREATE TABLE IF NOT EXISTS treinos (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-nome TEXT NOT NULL,
-duracao INTEGER NOT NULL
-)
+  CREATE TABLE IF NOT EXISTS treinos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    duracao INTEGER NOT NULL
+  )
 `);
-db.prepare('INSERT INTO treinos (nome, duracao) VALUES (?, ?)')
-.run('Teste de banco', 10);
-console.log(db.prepare('SELECT * FROM treinos').all());

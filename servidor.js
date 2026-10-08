@@ -1,18 +1,20 @@
-const express = require('express');
-const { DatabaseSync } = require('node:sqlite');
-const app = express();
 
+const express = require('express');
+const controller = require('./controllers/treinosController.js');
+
+const app = express();
 app.use(express.json());
 
-const db = new DatabaseSync('treinos.db');
+app.get('/treinos', controller.listar);
+app.get('/treinos/:id', controller.buscarUm);
+app.post('/treinos', controller.criar);
+app.put('/treinos/:id', controller.atualizar);
+app.delete('/treinos/:id', controller.remover);
 
-db.exec(`
-  CREATE TABLE IF NOT EXISTS treinos (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    duracao INTEGER NOT NULL
-  )
-`);
+const PORTA = 3000;
+app.listen(PORTA, () => {
+    console.log(`Servidor rodando em http://localhost:${PORTA}`);
+});
 
 function validarTreino(corpo) {
   if (typeof corpo.nome !== 'string' || corpo.nome.trim() === '') {
