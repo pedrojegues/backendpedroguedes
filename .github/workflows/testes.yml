@@ -36,6 +36,33 @@ jobs:
 
       - name: Roda os testes ate a aula declarada no arquivo AULA
         run: |
+          node servidor.js > server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+
+          for tentativa in $(seq 1 30); do
+            if curl --silent --fail http://localhost:3000/treinos >/dev/null; then
+              echo "Servidor disponivel em http://localhost:3000"
+              break
+            fi
+            if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+              cat server.log
+              echo "O servidor encerrou antes de ficar disponivel."
+              exit 1
+            fi
+            sleep 1
+          done
+
+          if ! curl --silent --fail http://localhost:3000/treinos >/dev/null; then
+            cat server.log
+            echo "O servidor nao respondeu em http://localhost:3000 apos 30 segundos."
+            exit 1
+          fi
+
+          kill "$SERVER_PID"
+          wait "$SERVER_PID" || true
+          trap - EXIT
+
           AULA=$(tr -d '[:space:]' < AULA)
           echo "Testando ate a aula $AULA"
           for n in $(seq 2 "$AULA"); do
