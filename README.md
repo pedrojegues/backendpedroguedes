@@ -51,6 +51,15 @@ Quando o `id` não existir, responda `404` no mesmo formato.
 
 Abra o `testes.http` no VS Code (extensão **REST Client**) e clique em *Send Request* em cada bloco. **Você terminou quando todas as requisições responderem o status da tabela acima.**
 
+### Resultado da última validação local (16/10/2026)
+
+- Testes oficiais da aula 02: 10 passaram, 0 falharam.
+- Testes oficiais da aula 03: 7 passaram, 0 falharam.
+- Aula 04: CRUD, validação e persistência após reiniciar o servidor passaram em verificação funcional local.
+- O servidor respondeu `HTTP 200` em `GET /treinos`.
+
+Os testes foram executados localmente contra o banco SQLite do projeto. Este resultado não representa uma execução do GitHub Actions.
+
 ## O semáforo
 
 Toda vez que você der `git push`, o GitHub roda os testes oficiais no seu código e marca um ✅ ou um ❌ do lado do commit. Você não precisa entender como isso funciona ainda — só olhar a cor.
