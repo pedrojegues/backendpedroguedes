@@ -79,7 +79,7 @@ DELETE {{url}}/treinos/99999
 ### 12 - Listar de novo pra conferir       -> espera 200
 GET {{url}}/treinos
 
-### 13 - Login com senha certa             -> espera 200 e um Set-Cookie
+### 13 - Login com senha certa -> espera 200 e um Set-Cookie
 POST {{url}}/login
 Content-Type: application/json
 
@@ -88,11 +88,11 @@ Content-Type: application/json
     "senha": "1234"
 }
 
-### 14 - Perfil                             -> espera 200 com o seu usuario
+### 14 - Perfil -> espera 200 com o seu usuario
 GET {{url}}/perfil
 
-### 15 - Logout                             -> espera 204
+### 15 - Logout -> espera 204
 POST {{url}}/logout
 
-### 16 - Perfil de novo                    -> espera 401
+### 16 - Perfil de novo -> espera 401
 GET {{url}}/perfil
