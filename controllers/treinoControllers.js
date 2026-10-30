@@ -86,3 +86,11 @@ return res.status(401).json({ erro: 'Faca login primeiro.' });
 }
 res.status(200).json(dono); // a rota agora SABE quem e
 }
+
+function logout(req, res) {
+const token = lerCookie(req, 'sid');
+if (token !== null) sessoes.encerrar(token);
+res.clearCookie('sid');
+res.status(204).end();
+}
+module.exports = { login, perfil, logout };
