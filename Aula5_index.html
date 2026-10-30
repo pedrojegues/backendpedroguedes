@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Meu primeiro React</title>
+</head>
+<body>
+  <script>
+    let usuarioLogado = null; // <-- uma variavel para o servidor inteiro
+app.post('/login', (req, res) => {
+// ... conferiu usuario e senha ...
+usuarioLogado = usuario; // "lembrei quem logou"
+res.json({ ok: true });
+});
+app.get('/perfil', (req, res) => {
+res.json(usuarioLogado); // "e esse aqui"
+});
+  </script>
+  
