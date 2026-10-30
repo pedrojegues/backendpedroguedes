@@ -1,5 +1,5 @@
 const express = require('express');
-const treinosController = require('./controllers/treinosController.js');
+const treinosController = require('./controllers/treinoControllers.js');
 const authController = require('./controllers/authController.js');
 
 const app = express();
