@@ -33,6 +33,11 @@ Esta tabela é **o que você tem que construir**. Enquanto uma rota não existir
 | POST | `/treinos` | cria | `201` + treino criado, ou `400` |
 | PUT | `/treinos/:id` | substitui | `200` + treino, ou `404` / `400` |
 | DELETE | `/treinos/:id` | remove | `204` sem corpo, ou `404` |
+| POST | `/login` | autentica usuario e cria sessao | `200` + usuario, ou `401` |
+| GET | `/perfil` | retorna o usuario da sessao | `200` + usuario, ou `401` |
+| POST | `/logout` | encerra a sessao | `204` |
+
+Para criar treinos pela API, envie primeiro `POST /login` com um usuario de teste. As senhas reais nao sao armazenadas: a tabela `usuarios` guarda somente hashes bcrypt em `senha_hash`.
 
 ### Regras de validação
 

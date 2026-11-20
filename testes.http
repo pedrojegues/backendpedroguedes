@@ -96,3 +96,51 @@ POST {{url}}/logout
 
 ### 16 - Perfil de novo -> espera 401
 GET {{url}}/perfil
+
+### 17 - Login com senha errada -> espera 401
+POST {{url}}/login
+Content-Type: application/json
+
+{
+    "usuario": "diego",
+    "senha": "errada"
+}
+
+### 18 - Login com usuario inexistente -> espera 401
+POST {{url}}/login
+Content-Type: application/json
+
+{
+    "usuario": "nao-existe",
+    "senha": "1234"
+}
+
+### 19 - Perfil sem login -> espera 401
+GET {{url}}/perfil
+
+### 20 - Login como diego -> espera 200
+POST {{url}}/login
+Content-Type: application/json
+
+{
+    "usuario": "diego",
+    "senha": "1234"
+}
+
+### 21 - Login como aluno -> troca a sessao e espera 200
+POST {{url}}/login
+Content-Type: application/json
+
+{
+    "usuario": "aluno",
+    "senha": "senha"
+}
+
+### 22 - Perfil da sessao atual -> espera 200 com aluno
+GET {{url}}/perfil
+
+### 23 - Logout da sessao atual -> espera 204
+POST {{url}}/logout
+
+### 24 - Perfil depois do logout -> espera 401
+GET {{url}}/perfil

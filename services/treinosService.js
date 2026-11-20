@@ -1,6 +1,6 @@
 const repository = require('../repositories/treinosRepository.js');
 
-   function validarTreino(corpo) {
+function validarTreino(corpo) {
     if (typeof corpo.nome !== 'string' || corpo.nome.trim() === '') {
         return 'O campo nome e obrigatorio e deve ser um texto.';
     }
@@ -13,9 +13,8 @@ const repository = require('../repositories/treinosRepository.js');
     return null;
 }
 
-
-function listarTodos() {
-    return repository.listarTodos();
+function listarTodos(minimo, busca) {
+    return repository.listarTodos(minimo, busca);
 }
 
 function buscarPorId(id) {
@@ -45,24 +44,20 @@ function removerTreino(id) {
     return { removido: true };
 }
 
+function contarTreinos() {
+    return repository.contar();
+}
+
+function resumoTreinos() {
+    return repository.resumo();
+}
+
 module.exports = {
     listarTodos,
     buscarPorId,
     criarTreino,
     atualizarTreino,
     removerTreino,
+    contarTreinos,
+    resumoTreinos,
 };
-
-const repository = require('../repositories/usuariosRepository.js');
-function login(usuario, senha) {
-const encontrado = repository.buscarPorUsuario(usuario);
-if (encontrado === undefined) {
-return { invalido: true }; // usuario nao existe
-}
-if (encontrado.senha !== senha) {
-return { invalido: true }; // senha errada (texto puro, por enquanto)
-}
-// devolve sem a senha
-return { usuario: { id: encontrado.id, usuario: encontrado.usuario } };
-}
-module.exports = { login };
