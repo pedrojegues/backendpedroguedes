@@ -16,4 +16,8 @@ function encerrar(token) {
     sessoes.delete(token);
 }
 
-module.exports = { criar, usuarioIdDaSessao, encerrar };
+function temSessoesAtivas() {
+    return sessoes.size > 0;
+}
+
+module.exports = { criar, usuarioIdDaSessao, encerrar, temSessoesAtivas };

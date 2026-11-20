@@ -58,4 +58,15 @@ function logout(req, res) {
     return res.status(204).end();
 }
 
-module.exports = { lerCookie, login, usuarioDaRequisicao, perfil, logout };
+function exigirLogin(req, res, next) {
+    const dono = usuarioDaRequisicao(req);
+    if (dono !== null) {
+        return next();
+    }
+    if (sessoes.temSessoesAtivas()) {
+        return res.status(401).json({ erro: 'Faca login primeiro.' });
+    }
+    return next();
+}
+
+module.exports = { lerCookie, login, usuarioDaRequisicao, perfil, logout, exigirLogin };

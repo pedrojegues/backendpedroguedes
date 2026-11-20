@@ -5,7 +5,7 @@ async function criarUsuariosDeTeste() {
     const senhaDiego = await bcrypt.hash('1234', 10);
     const senhaAluno = await bcrypt.hash('senha', 10);
     const inserir = db.prepare(
-        'INSERT INTO usuarios (usuario, senha_hash) VALUES (?, ?)'
+        'INSERT OR REPLACE INTO usuarios (usuario, senha_hash) VALUES (?, ?)'
     );
 
     inserir.run('diego', senhaDiego);
