@@ -203,6 +203,74 @@ button:disabled {
 }
 .selo.feito { color: var(--cor-sucesso); }
 
+/* ---- Filtros da lista de treinos ---- */
+.treinos-layout {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.7fr) minmax(0, 1.8fr);
+  gap: var(--espacamento);
+  align-items: start;
+}
+.barra-filtros {
+  position: sticky;
+  top: 16px;
+  height: fit-content;
+  padding: 20px 16px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-borda);
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra);
+}
+.titulo-filtros {
+  margin: 0 0 16px;
+  color: var(--cor-texto);
+  font-size: 1.05rem;
+}
+.campo-busca { margin-bottom: 20px; }
+.campo-busca label {
+  margin-bottom: 6px;
+  font-size: 0.8rem;
+}
+.input-busca {
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+.input-busca:focus {
+  outline: 2px solid var(--cor-primaria);
+  outline-offset: 1px;
+}
+.grupo-filtros + .grupo-filtros { margin-top: 20px; }
+.subtitulo-filtro {
+  margin: 0 0 10px;
+  color: var(--cor-texto-suave);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.grupo-botoes-filtro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.btn-filtro {
+  padding: 10px 12px;
+  border: 1px solid var(--cor-borda);
+  background: transparent;
+  color: var(--cor-texto);
+  font-size: 0.88rem;
+  text-align: left;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.btn-filtro:hover,
+.btn-filtro.ativo {
+  border-color: var(--cor-primaria);
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--cor-primaria);
+}
+.btn-filtro:focus-visible {
+  outline: 2px solid var(--cor-primaria);
+  outline-offset: 2px;
+}
+
 /* ---- Edição inline ----
    Quando você clica em "editar" num treino, aparecem inputs no lugar do texto.
    No Figma: quase nunca tem isso desenhado. Se tiver, ajusta aqui. */
@@ -237,6 +305,17 @@ button:disabled {
 
 .testes { list-style: none; padding: 0; margin: 8px 0 0; }
 .testes li { padding: 2px 0; font-size: 0.9rem; }
+
+@media (max-width: 640px) {
+  .treinos-layout {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .barra-filtros {
+    position: static;
+    margin-bottom: 12px;
+  }
+}
 
 /* ---- Código inline (usado pra mostrar rotas tipo "GET /treinos/total") ----
    No Figma: se tiver um "code style" definido (fundo cinza, fonte monoespaçada),

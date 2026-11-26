@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { chamar, mensagemDeErro } from './api.js';
+import BarraFiltros from './BarraFiltros.jsx';
 import CartaoTreino from './CartaoTreino.jsx';
 
 export default function Treinos({ onSessaoExpirada }) {
@@ -10,6 +11,9 @@ export default function Treinos({ onSessaoExpirada }) {
 
   const [nome, setNome] = useState('');
   const [duracao, setDuracao] = useState('');
+  const [termoBusca, setTermoBusca] = useState('');
+  const [statusAtivo, setStatusAtivo] = useState('todos');
+  const [ordenacaoAtiva, setOrdenacaoAtiva] = useState('padrao');
 
   // ---------------------------------------------------------------
   // PRONTO: busca de dados (useEffect + fetch). Isso e conteudo das
@@ -109,6 +113,40 @@ export default function Treinos({ onSessaoExpirada }) {
     enviarNovoTreino();
   }
 
+  const buscaNormalizada = termoBusca
+    .trim()
+    .toLocaleLowerCase('pt-BR')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  const treinosVisiveis = treinos
+    .filter((treino) => {
+      const nomeNormalizado = treino.nome
+        .toLocaleLowerCase('pt-BR')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+      const correspondeBusca = nomeNormalizado.includes(buscaNormalizada);
+      const concluido = Boolean(treino.concluido);
+      const correspondeStatus =
+        statusAtivo === 'todos' ||
+        (statusAtivo === 'concluidos' && concluido) ||
+        (statusAtivo === 'pendentes' && !concluido);
+
+      return correspondeBusca && correspondeStatus;
+    })
+    .sort((a, b) => {
+      if (ordenacaoAtiva === 'duracao-asc') {
+        return Number(a.duracao) - Number(b.duracao);
+      }
+      if (ordenacaoAtiva === 'duracao-desc') {
+        return Number(b.duracao) - Number(a.duracao);
+      }
+      if (ordenacaoAtiva === 'nome') {
+        return a.nome.localeCompare(b.nome, 'pt-BR');
+      }
+      return 0;
+    });
+
   return (
     <>
       {/* TAREFA 5: deixe os dois campos CONTROLADOS (value + onChange,
@@ -145,33 +183,48 @@ export default function Treinos({ onSessaoExpirada }) {
         </p>
       )}
 
-      <section className="cartao">
-        <h2>
-          Meus treinos{' '}
-          <span className="selo">
-            {total === null ? 'total: ?' : `total: ${total}`}
-          </span>
-        </h2>
+      <div className="treinos-layout">
+        <BarraFiltros
+          termoBusca={termoBusca}
+          onSearch={setTermoBusca}
+          statusAtivo={statusAtivo}
+          onStatusChange={setStatusAtivo}
+          ordenacaoAtiva={ordenacaoAtiva}
+          onSort={setOrdenacaoAtiva}
+        />
 
-        {carregando && <p className="suave">Carregando...</p>}
+        <section className="cartao">
+          <h2>
+            Meus treinos{' '}
+            <span className="selo">
+              {total === null ? 'total: ?' : `total: ${total}`}
+            </span>
+          </h2>
 
-        {!carregando && treinos.length === 0 && (
-          <p className="suave">
-            Nenhum treino ainda. Cadastre o primeiro acima.
-          </p>
-        )}
+          {carregando && <p className="suave">Carregando...</p>}
 
-        <ul className="lista">
-          {treinos.map((treino) => (
-            <CartaoTreino
-              key={treino.id}
-              treino={treino}
-              onConcluir={concluir}
-              onApagar={apagar}
-            />
-          ))}
-        </ul>
-      </section>
+          {!carregando && treinos.length === 0 && (
+            <p className="suave">
+              Nenhum treino ainda. Cadastre o primeiro acima.
+            </p>
+          )}
+
+          {!carregando && treinos.length > 0 && treinosVisiveis.length === 0 && (
+            <p className="suave">Nenhum treino corresponde aos filtros.</p>
+          )}
+
+          <ul className="lista">
+            {treinosVisiveis.map((treino) => (
+              <CartaoTreino
+                key={treino.id}
+                treino={treino}
+                onConcluir={concluir}
+                onApagar={apagar}
+              />
+            ))}
+          </ul>
+        </section>
+      </div>
     </>
   );
 }
